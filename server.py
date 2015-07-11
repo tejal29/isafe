@@ -65,6 +65,38 @@ def get_heat_points():
 
         return Crime_Stat.get_features_objects_by_date(start_date,end_date)
 
+@app.route('/points-of-interest')
+def show__markers():
+    """Show map with markers."""
+
+    return render_template("markers.html")
+
+
+@app.route('/get_markers')
+def get_marker_points():
+    """Get JSON objects for marker points."""
+
+    start_date = request.args.get("start_date") #start_date and end_date are defined in the event listener in javascript and passed into Flask
+    end_date = request.args.get("end_date")
+
+    if start_date:                              #if the user enters in a start_date
+
+        print start_date
+
+        start_date_formatted = datetime.strptime(start_date,"%Y-%m-%d") #reformat start and end dates as date objects
+        end_date_formatted = datetime.strptime(end_date,"%Y-%m-%d")
+        
+        return Crime_Stat.get_features_objects_by_date(start_date_formatted,end_date_formatted) #call class method that will return GeoJSON features
+
+    else:                               # user has not entered in a date, use a default period
+        
+        end_date = datetime.now()                    
+        start_date = end_date - timedelta(days=15)
+
+        print start_date
+
+        return Crime_Stat.get_features_objects_by_date(start_date,end_date)
+
 
 @app.route('/organizations')
 def show_organization_form():
@@ -76,11 +108,20 @@ def show_organization_form():
 def process_report():
     """Save reported crime to database."""
 
-    time_input = request.args.get("time")
-    date_input = request.args.get("date")
-    address_input = request.args.get("address")
+    name = request.args.get("name")
+    email = request.args.get("email")
+    phone = request.args.get("phone")
+    twitter = request.args.get("twitter")
+    address = request.args.get("address")
     description = request.args.get("description")
-    map_category = request.args.get("map_category")
+
+    categories = str(request.args.get("categories")) #put JS returned into string
+    categories_list = categories.strip("]").strip("[").split(",") #put string into list
+    category_list = []
+
+    for category in categories_list:    #iterate through the list to strip out quotes and add to a list
+        category_stripped = category.strip('"')
+        category_list.append(category_stripped)
 
 
 if __name__ == "__main__":
