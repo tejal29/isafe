@@ -8,4 +8,5 @@ Jinja2==2.7.3
 MarkupSafe==0.23
 requests==2.7.0
 SQLAlchemy==1.0.6
+TwitterAPI==2.1.9
 Werkzeug==0.10.4
