@@ -1,6 +1,6 @@
 """Utility file to seed crime statistics and victim data"""
 
-from model import Crime_Stat, Data_Import, Hour_Count, Day_Count, Month_Count, connect_to_db, db
+from model import DM_detail, NGO, Connection, Category, Status, connect_to_db, db
 from server import app
 import csv
 from datetime import datetime
@@ -9,9 +9,21 @@ import requests
 import json
 
 
+def load_category_table():
+
+	"""Fill category table."""
+
+
+def load_status_table():
+
+	"""Load status code table."""
+
+	
+
+
+
 if __name__ == "__main__":
     connect_to_db(app)
 
-    #load_crime_stats()
-    load_recent_stats()
-    #load_crime_counts()
+    load_category_table()
+    load_status_table()
