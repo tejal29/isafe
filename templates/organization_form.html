@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<script src='../static/nprogress/nprogress.js'></script>
+<link rel='stylesheet' href='../static/nprogress/nprogress.css'/>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+
+<link rel="stylesheet" href="../static/css/stylesheet.css">
+
+<div class="container">
+<!--     <div class="row"> -->
+        <div class="col-md-12">
+            <form class="form-horizontal">
+            	<div id="name_input" class="form-group">
+                	<label class="control-label">Organization Name 
+                    	<input type="text" class="form-control" name="name" id="organization_name" placheolder="Enter organization name">
+    				</label>
+                </div>
+                <div id="email_input" class="form-group">
+                    <label class="control-label">Contact Email 
+                        <input type="email" class="form-control" name="email" id="organization_email" placheolder="Enter contact email">
+                    </label>
+                </div>
+                <div id="phone_input" class="form-group">
+                    <label class="control-label">Contact Phone
+                        <input type="text" class="form-control" name="phone" id="organization_phone" placheolder="Enter contact phone">
+                    </label>
+                </div>
+                <div id="handle_input" class="form-group">
+    				<label class="control-label">Twitter Handle
+                        <span class="input-group-addon">@</span>
+                    	<input type="text" class="form-control" id="twitter_handle" name="twitter" placheolder="Enter twitter handle">
+                	</label>
+                </div>
+                <div id="address_input" class="form-group">
+                    <label class="control-label">Enter Address 
+                    	<input type="text" class="form-control" id="org_address" name="address" placheolder="Enter address">
+                	</label>
+                </div>
+                <div id="description_input" class="form-group">
+                    <label class="control-label">Enter Organization Description
+                        <br>
+                    	<textarea class="form-control" rows="3" name='description' id='org_description' placeholder="Enter organization description"></textarea>
+                	</label>
+                </div>
+                <div>
+                    <label>Select Specialtiy
+                    </label>
+                </div>
+                </div class="checkbox">
+                    <div>
+                        <input type="checkbox" name="category" value='Harrassment' checked>Harrassment
+                    </div>
+                <div>
+
+            	<button type="submit" id="org_button" class="btn btn-default">Submit</button>
+            	<br>
+            </form>
+<!--         </div>    --> 
+    </div>
+</div>
+
+<!-- <script src='../static/JS/map.js'></script> -->
+<!-- <script src='../static/JS/report.js'></script> -->
+
+{% endblock %}
