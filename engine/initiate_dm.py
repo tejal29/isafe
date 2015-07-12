@@ -27,7 +27,7 @@ def initiate_dm(ngo_rep, victim_id, key, secret):
     print("Could not follow")
   try:
     # Todo Fetch the tokens for ngo from database
-    text = "Hello Friend! I am your ISafe help. Tell me more about."
+    text = "Hello Friend! I am your ISafe help. Tell me more about it."
     auth.set_access_token(key, secret)
     api = tweepy.API(auth)
     api.create_friendship(victim_id)

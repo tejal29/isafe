@@ -77,6 +77,10 @@ def show_reported_incidents():
    
     return render_template("markers.html")
 
+@app.route('/partners')
+def show_partners():
+  return render_template("partners.html")
+
 @app.route('/counselling')
 def show_table():
   connections = Connection.query.all()
@@ -106,7 +110,7 @@ def show_organization_form():
     return render_template("partner_form.html")
 
 @app.route('/get_partners')
-def show_partners():
+def get_partners():
     """Get JSON objects for partners."""
 
     return NGO.get_features_objects()
