@@ -11,36 +11,36 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <form class="form-horizontal" action='/save_org_info'>
+            <form class="form-horizontal" action='/twitter_signin'>
             	<div id="name_input" class="form-group">
                 	<label class="col-md-2 control-label">Organization Name</label>
                     <div class="col-md-6 input-group">
-                    	<input type="text" class="form-control" name="name" id="organization_name" placheolder="Enter organization name">
+                    	<input type="text" class="form-control" name="name" id="organization_name" placeholder="Enter organization name">
     				</div>
                 </div>
                 <div id="email_input" class="form-group">
                     <label class="col-md-2 control-label">Contact Email</label>
                     <div class="col-md-6 input-group">
-                        <input type="email" class="form-control" name="email" id="organization_email" placheolder="Enter contact email">
+                        <input type="email" class="form-control" name="email" id="organization_email" placeholder="Enter contact email">
                     </div>
                 </div>
                 <div id="phone_input" class="form-group">
                     <label class="col-md-2 control-label">Contact Phone</label>
                     <div class="col-md-6 input-group">
-                        <input type="text" class="form-control" name="phone" id="organization_phone" placheolder="Enter contact phone">
+                        <input type="text" class="form-control" name="phone" id="organization_phone" placeholder="Enter contact phone">
                     </div>
                 </div>
                 <div id="handle_input" class="form-group">
     				<label class="col-md-2 control-label">Twitter Handle</label>
                         <div class="col-md-6 input-group">
                             <span class="input-group-addon">@</span>
-                        	<input type="text" class="form-control" id="twitter_handle" name="twitter" placheolder="Enter twitter handle">
+                        	<input type="text" class="form-control" id="twitter_handle" name="twitter" placeholder="Enter twitter handle">
                         </div>
                 </div>
                 <div id="address_input" class="form-group">
                     <label class="col-md-2 control-label">Enter Address</label>
                     <div class="col-md-6 input-group">
-                    	<input type="text" class="form-control" id="org_address" name="address" placheolder="Enter address">
+                    	<input type="text" class="form-control" id="org_address" name="address" placeholder="Enter address">
                     </div>
                 </div>
                 <div id="description_input" class="form-group">
@@ -60,13 +60,14 @@
                 </div>
                 <div id="submit_buttom" class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-            	               <a href="/twitter_signin">
+                        <button type="submit">Submit
+   <!--          	               <a href="/twitter_signin">
                                     <img src="/images/sign-in.png" />                   
-                                </a>
+                                </a> -->
+                        </button>
                     </div>
                 </div>
             	<br>
-                <button type="submit">Submit</button>
             </form>
         </div>    
     </div>

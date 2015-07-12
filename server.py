@@ -29,6 +29,10 @@ twitter = oauth.remote_app('twitter',
   consumer_secret=consumer_secret
 )
 
+print "this is runnign"
+
+print twitter
+
 TWITTER_REQUEST_TOKEN = 'https://api.twitter.com/oauth/request_token'
 
 app = Flask(__name__)
@@ -66,6 +70,8 @@ def index():
 @app.route('/organizations')
 def show_organization_form():
     """Shows form for organizations/NGOs to complete."""
+
+    print twitter
    
     return render_template("organization_form.html")
 
@@ -145,14 +151,69 @@ def get_oauth_token(resp):
     user_id  = session['user_id']
     user_token = session['oauth_token']
     user_secret = session['oauth_token_secret']
+    name = session["name"]
+    email = session["email"]
+    twitter_handle = session["twitter_handle"]
+    address = session["address"]
+    description = session["description"]
+    categories = session["category"]
+    x_cord = session["x_cord"]
+    y_cord = session["y_cord"]
+    phone = session["phone"]
+
+    for category in categories:
+        organization = NGO(org_name=name,email=email, twitter_handle=twitter_handle,address=address,description=description,category=category,
+        x_cord=x_cord,y_cord=y_cord,phone=phone,twitter_user_id=user_id,twitter_user_token=user_token,twitter_user_secret=user_secret)
+        
+        db.session.add(organization)
+
+    db.session.commit() 
+
     return redirect('/')
 
 @app.route('/twitter_signin', methods=["GET","POST"])
 def twitter_auth():
     """Twitter authorization."""
 
-    return twitter.authorize(callback='/twitter_auth')
+    name = request.args.get("name")
+    email = request.args.get("email")
+    phone = request.args.get("phone")
+    twitter_handle = request.args.get("twitter")
+    address = request.args.get("address")
+    description = request.args.get("description")
 
+    print name
+    print email
+
+    categories = str(request.args.get("categories")) #put JS returned into string
+    categories_list = categories.strip("]").strip("[").split(",") #put string into list
+    category_list = []
+
+    for category in categories_list:    #iterate through the list to strip out quotes and add to a list
+        category_stripped = category.strip('"')
+        category_list.append(category_stripped)
+
+    #use the Mapbox geocoder API to get the coordinates of the addressed inputted
+    geocode = requests.get("http://api.tiles.mapbox.com/v4/geocode/mapbox.places/'%s'.json?access_token=pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZexYn1AwdiasXbsg" % address)
+    geocode_text = geocode.text     #put the response into text
+    geocode_json = json.loads(geocode_text) #read in as json
+
+    coordinates = geocode_json["features"][0]["geometry"]["coordinates"]    #this will return the coordinates of the first returned location, sometimes there is more than one, maybe deal with this later
+
+    y_cord = coordinates[0]
+    x_cord = coordinates[1]
+
+    session["name"] = name
+    session["email"] = email
+    session["phone"] = phone
+    session["twitter_handle"] = twitter_handle
+    session["address"] = address
+    session["description"] = description
+    session["category"] = category_list
+    session["y_cord"] = y_cord
+    session["x_cord"] = x_cord
+
+    return twitter.authorize(callback='/twitter_auth')
 
 def get_twitter_profile(user_id):
   """ """

@@ -29,9 +29,9 @@ class DM_detail(db.Model):
 	x_cord = db.Column(db.Numeric, nullable=True)
 	y_cord = db.Column(db.Numeric, nullable=True)
 	day_of_week = db.Column(db.String(10), nullable=True)
-	date = db.Column(db.Date, nullable=False)
+	datetime = db.Column(db.Date, nullable=False)
 	month = db.Column(db.String(10), nullable=True)
-	time = db.Column(db.Time, nullable=False)
+	time = db.Column(db.Time, nullable=True)
 	hour = db.Column(db.String(10), nullable=True)
 	category = db.Column(db.String(60), nullable=True)
 	raw_text = db.Column(db.String(140), nullable=False)
@@ -68,7 +68,7 @@ class NGO(db.Model):
 
 	"""Table of NGO information."""
 
-	__tablename__ = "NGO_info"
+	__tablename__ = "ngo_info"
 
 	org_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	org_name = db.Column(db.String(60), nullable=False)
