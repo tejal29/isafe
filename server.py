@@ -131,6 +131,7 @@ def process_report():
 
 
 @app.route('/twitter_auth', methods=["GET"])
+def get_oauth_token():
 
     # Example using callback (web app)
     verifier = request.args.get('oauth_verifier')
