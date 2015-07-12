@@ -19,7 +19,7 @@ $( document ).ready(function(){
       $("#error").html("Please fill out all form fields.");
     }
     else {
-    	$.getJSON('/save_org_info', { name: name, email: email, phone: phone, twitter: twitter, address: address, description: 
+    	$.getJSON('/complete_registration', { name: name, email: email, phone: phone, twitter: twitter, address: address, description: 
                                     description, categories: JSON.stringify(categories) } ).done(function(data){ //this will add a marker on the map for the incident the user just reported
         feature_layer.setGeoJSON([]); //empty the feature_layer of objects
         try {

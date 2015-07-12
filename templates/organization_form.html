@@ -9,14 +9,23 @@
 <link rel="stylesheet" href="../static/css/stylesheet.css">
 
 <div class="container">
+    Thank you for signing up to become a volunteer! Currently we only allow sign ups for preregistered organizations.
+    If your organization is not registered with us, please send us an email to admin-isafe@gmail.com with a your organization information and a list of volunteers. Verification process may take upto a week. <br> <br>
+
     <div class="row">
         <div class="col-md-12">
             <form class="form-horizontal" action='/twitter_signin'>
             	<div id="name_input" class="form-group">
                 	<label class="col-md-2 control-label">Organization Name</label>
                     <div class="col-md-6 input-group">
-                    	<input type="text" class="form-control" name="name" id="organization_name" placeholder="Enter organization name">
+                    	<input type="text" class="form-control" name="org_name" id="organization_name" placeholder="Enter organization name">
     				</div>
+                </div>
+                <div id="name_input" class="form-group">
+                        <label class="col-md-2 control-label">Your Name</label>
+                    <div class="col-md-6 input-group">
+                        <input type="text" class="form-control" name="name" id="your_name" placeholder="Enter Your name">
+                                </div>
                 </div>
                 <div id="email_input" class="form-group">
                     <label class="col-md-2 control-label">Contact Email</label>
