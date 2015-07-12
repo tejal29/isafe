@@ -61,7 +61,7 @@ def before_request():
 def index():
     """Homepage."""
    
-    return render_template("base.html")
+    return render_template("homepage.html")
 
 @app.route('/heat')
 def show_heat():
