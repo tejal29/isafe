@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<script src='../static/nprogress/nprogress.js'></script>
+<link rel='stylesheet' href='../static/nprogress/nprogress.css'/>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+
+<link rel="stylesheet" href="../static/css/stylesheet.css">
+<div class="container">
+  <table>
+  <tr>
+       <th> Organization Name </th>
+       <th> Volunteer Name </th>
+       <th> Twitter Hadle </th>
+       <th> Address </th>
+       <th> Email </th>
+       <th> Phone </th>
+  </tr>
+  {% for volunteer in volunteers %}
+   <tr>
+        <td> {{ volunteer.org_name }} </td>
+        <td> {{ volunteer.name }} </td>
+        <td> @{{ volunteer.twitter_handle }} </td>
+        <td> {{ volunteer.address }} </td>
+        <td> {{ volunteer.email }} </td>
+        <td> {{ volunteer.phone }} </td>
+   </tr>
+  {% endfor %}
+</table>
+
+</div>
+
+<!-- <script src='../static/JS/map.js'></script> -->
+<script src='../static/js/organizations.js'></script>
+
+{% endblock %}
+

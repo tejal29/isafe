@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<script src='../static/nprogress/nprogress.js'></script>
+<link rel='stylesheet' href='../static/nprogress/nprogress.css'/>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+
+<link rel="stylesheet" href="../static/css/stylesheet.css">
+<div class="container">
+  On Going Petitions
+  <table>
+  <tr>
+       <th> Title </th>
+       <th> Signed Count </th>
+       <th> Target signatures </th>
+       <th> Link </th>
+  </tr>
+  {% for petition in petitions %}
+   <tr>
+        <td> {{ petition.title}} </td>
+        <td> {{ petition.signature_count}} </td>
+        <td> {{ petition.goal}} </td>
+        <td> <a href='{{ petition.url }}'>View Petition </a> </td>
+        <td> <a class="twitter-share-button" href="https://twitter.com/intent/tweet">Tweet</a></td>
+   </tr>
+  {% endfor %}
+  </table>
+  <br> <br>
+  Cities with Border Line Incidents <br>
+  <table>
+  <tr> <th> City </th></tr>
+  {% for city in cities %}
+   <tr>
+        <td> {{ city }} </td>
+        <td> <a href='https://www.change.org/start-a-petition'> Start a Petition </a> </td>
+   </tr>
+  {% endfor %}
+ </table>
+</div>
+<!-- <script src='../static/JS/map.js'></script> -->
+<script src='../static/js/organizations.js'></script>
+
+{% endblock %}
+
