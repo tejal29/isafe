@@ -21,20 +21,33 @@
         <div class="col-md-9">
             <div id="map"></div>
 <!--             <div class="circle_box">
-              <div class="circle_box_svg">
-              <svg class="svg" width=200 height=200>
-                <circle cx=100 cy=100 r=50 />
-              </svg>
-            </div>
-          </div> -->
+                <div class="circle_box_svg">
+                <svg class="svg" width=200 height=200>
+                  <circle cx=100 cy=100 r=50 />
+                </svg>
+              </div>
+            </div> -->
             <nav id='filters' class='filter-ui'></nav>
         </div>
         <div class="col-md-3">
-            <div class="form-group">
+            <div class='my-legend'>
+                <div class='legend-title'>Incident Category Legend</div>
+                <div class='legend-scale'>
+                  <ul class='legend-labels'>
+                    <li><span style='background:#FF0000;'></span>Eve Teasing</li>
+                    <li><span style='background:#0000FF;'></span>Harrassment</li>
+                    <li><span style='background:#008000;'></span>Abuse</li>
+                    <li><span style='background:#FFA500;'></span>Workplace</li>
+                    <li><span style='background:#669999;'></span>Other</li>
+                  </ul>
+                </div>
+            </div>
+            <br>
+            <div class="form-group" display="block">
                 <h6>Time Period<h6>
                 <br>
                 <label>
-                    <input type="date" class="form-control" name="start" min="2003-01-01" required>
+                  <input type="date" class="form-control" name="start" min="2003-01-01" required>
                 </label>
             </div>
             <div class="to_box">
@@ -42,15 +55,16 @@
             </div>
             <br>
             <div class="form-group">
-                <label>   
-                    <input type="date" class="form-control" name="end" required>
+                <label>
+                  <input type="date" class="form-control" name="end" required>
                 </label>
             </div>
-            <button id="heat_button" class="btn btn-default">Submit</button>
+            <button id="marker_button" class="btn btn-default">Submit</button>
+                <br>
         </div>    
     </div>
 
 <script src='../static/JS/map.js'></script>
-<script src='../static/JS/heatmap.js'></script>
+<!-- <script src='../static/JS/markers.js'></script> -->
 
 {% endblock %}

@@ -9,23 +9,20 @@
 <link rel="stylesheet" href="../static/css/stylesheet.css">
 
 <div class="container">
-    Thank you for signing up to become a volunteer! Currently we only allow sign ups for preregistered organizations.
-    If your organization is not registered with us, please send us an email to admin-isafe@gmail.com with a your organization information and a list of volunteers. Verification process may take upto a week. <br> <br>
-
     <div class="row">
         <div class="col-md-12">
             <form class="form-horizontal" action='/twitter_signin'>
-            	<div id="name_input" class="form-group">
+            	<div id="org_name_input" class="form-group">
                 	<label class="col-md-2 control-label">Organization Name</label>
                     <div class="col-md-6 input-group">
                     	<input type="text" class="form-control" name="org_name" id="organization_name" placeholder="Enter organization name">
     				</div>
                 </div>
                 <div id="name_input" class="form-group">
-                        <label class="col-md-2 control-label">Your Name</label>
+                    <label class="col-md-2 control-label">Your Name</label>
                     <div class="col-md-6 input-group">
-                        <input type="text" class="form-control" name="name" id="your_name" placeholder="Enter Your name">
-                                </div>
+                        <input type="text" class="form-control" name="name" id="organization_name" placeholder="Enter your name">
+                    </div>
                 </div>
                 <div id="email_input" class="form-group">
                     <label class="col-md-2 control-label">Contact Email</label>
@@ -62,10 +59,16 @@
                     <div class="col-md-offset-2 col-md-10">
                         </div class="checkbox">
                             <label class="col-md-2 control-label">
-                                <input type="checkbox" name="category" value='harrassment' checked>Harrassment
-                                <input type="checkbox" name="category" value='workplace' checked>WorkPlace Harrassment
-                                <input type="checkbox" name="category" value='abuse'>Abuse
-				<input type="checkbox" name="category" value='eveteasing'>Eve Teasing
+                                <input type="checkbox" name="category" value='Harrassment' checked>Harrassment
+                            </label>
+                            <label class="col-md-2 control-label">
+                                <input type="checkbox" name="category" value='Eve Teasing' checked>Eve Teasing
+                            </label>
+                            <label class="col-md-2 control-label">
+                                <input type="checkbox" name="category" value='Abuse' checked>Abuse
+                            </label>
+                            <label class="col-md-2 control-label">
+                                <input type="checkbox" name="category" value='Workplace' checked>Workplace
                             </label>
                         <div>
                     </div>
@@ -73,9 +76,7 @@
                 <div id="submit_buttom" class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <button type="submit">Submit
-   <!--          	               <a href="/twitter_signin">
-                                    <img src="/images/sign-in.png" />                   
-                                </a> -->
+                            <img src="../images/sign-in.png" alt="twitter-signin" /> 
                         </button>
                     </div>
                 </div>
@@ -85,7 +86,6 @@
     </div>
 </div>
 
-<!-- <script src='../static/JS/map.js'></script> -->
-<script src='../static/js/organizations.js'></script>
+<script src='../static/js/partner_form.js'></script>
 
 {% endblock %}
