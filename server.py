@@ -139,12 +139,6 @@ def show_volunteers():
    volunteers = NGO.query.outerjoin(Connection)
    print(volunteers)
    return render_template("volunteers.html", volunteers=volunteers)
-
-@app.route('/volunteer_registration')
-def show_organization_form():
-    """Shows form for organizations/NGOs to complete."""
-
-    return render_template("organization_form.html")
     
 @app.route('/get_heat')
 def get_heat_points():

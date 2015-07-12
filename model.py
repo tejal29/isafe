@@ -101,7 +101,7 @@ class NGO(db.Model):
 
 	org_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	org_name = db.Column(db.String(60), nullable=False)
-    name = db.Column(db.String(60), nullable=False)
+	name = db.Column(db.String(60), nullable=False)
 	twitter_handle = db.Column(db.String(60), nullable=False)
 	email = db.Column(db.String(60), nullable=False)
 	phone = db.Column(db.String(60), nullable=False)
