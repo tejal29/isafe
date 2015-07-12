@@ -80,14 +80,13 @@ def show_reported_incidents():
 @app.route('/volunteers')
 def show_partners_map():
     """Shows partners on map."""
-   
-    return render_template("volunteers.html")
+    volunteers = NGO.query.all() 
+    return render_template("volunteers.html", volunteers=volunteers)
 
 @app.route('/partner_form')
 def show_organization_form():
     """Shows form for organizations/NGOs to complete."""
 
-    print twitter
    
     return render_template("partner_form.html")
 
