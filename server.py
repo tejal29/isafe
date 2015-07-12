@@ -137,7 +137,7 @@ def get_oauth_token():
     verifier = request.args.get('oauth_verifier')
     # verifier = auth.request_token["oauth_token"]
 
-    print verifier
+    print "verifier is %s" % verifier
 
     # Let's say this is a web app, so we need to re-build the auth handler
     # first...
@@ -176,7 +176,7 @@ def twitter_auth():
 
     session.setdefault('request_token', auth.request_token)
 
-    print auth.request_token["oauth_token"]
+    # print auth.request_token["oauth_token"]
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
