@@ -1,16 +1,19 @@
 import datetime 
-import tweepy
 import oauth2 as oauth
 import json
 import os
 from dateutil import parser
+
+import tweepy
+from flask_sqlalchemy import SQLAlchemy
+from model import connect_to_db, DM_detail, db 
 
 CONSUMER_KEY = 	os.getenv('TWITTER_CONSUMER_KEY', None)
 CONSUMER_SECRET = os.getenv('TWITTER_CONSUMER_SECRET', None)
 ACCESS_KEY = os.getenv('TWITTER_ACCESS_TOKEN_KEY')
 ACCESS_SECRET = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
 
-def parse_tweet():
+def parse_tweets():
   consumer = oauth.Consumer(key=CONSUMER_KEY, secret=CONSUMER_SECRET)
   access_token = oauth.Token(key=ACCESS_KEY, secret=ACCESS_SECRET)
   client = oauth.Client(consumer, access_token)
@@ -26,6 +29,8 @@ def parse_tweet():
   harrassment_types = []
   getmetosafety = []
   safe_for_all = []
+
+  create_incidents = []
 
   for tweet in tweets:
     sender_ids = tweet['sender'] ['id']
@@ -59,13 +64,16 @@ def parse_tweet():
     #time = parser.parse(times).strmp
     time = datetime.datetime.strptime(times, '%a %b %d %H:%M:%S +0000 %Y')
 
-
-    # direct_message = DM_detail(user_id=sender_ids,location=sender_locations,date=time,category=harrassment_types,raw_text=texts,
-    # 	to_safety=getmetosafety)
-    # db.session.add(direct_message)
-    # db.session.commit()
-    print (sender_ids, sender_locations, time, getmetosafety, harrassment_types, texts)
-
-if __name__ == "__main__":
-  parse_tweet()
-
+  
+    if DM_detail.query.filter_by(data_source=tweet['id_str']).count() == 0:
+      # Check if user already reported something or getmetosafety
+      if getmetosafety or DM_detail.query.filter_by(user_id=sender_ids).count() > 0:
+         incident = {}
+         incident['victim_id'] = sender_ids
+         incident['location'] = 'Pune'
+         create_incidents.append(incident)
+      direct_message = DM_detail(user_id=sender_ids, data_source = tweet['id_str'],
+                         location=sender_locations,datetime=time,category=harrassment_types,raw_text=texts, to_safety=getmetosafety)
+      db.session.add(direct_message)
+      db.session.commit()
+  return create_incidents

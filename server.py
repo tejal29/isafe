@@ -12,6 +12,8 @@ import ast
 import os
 import tweepy
 from flask_oauth import OAuth
+from dm import parse_tweets
+from engine.initiate_dm import get_ngo, initiate_dm
 
 consumer_key=os.environ['TWITTER_CONSUMER_KEY']
 consumer_secret=os.environ['TWITTER_CONSUMER_SECRET']
@@ -234,6 +236,25 @@ def get_twitter_profile(user_id):
       "screen_name": profile.get('screen_name', '')
     }
   return twitter_profile
+
+@app.route('/fetch/')
+def fetch_dms():
+ fetch_stats =[]
+ processed_incidents = parse_tweets()
+ print processed_incidents
+ for incident in processed_incidents:
+   #ngo = NGO.query.filter_by(address=location).first()
+   ngo = get_ngo(incident['location'])
+   print(ngo)
+   fetch_stats.append('Contacted Volunteer %s  @%s from %s' %(ngo.name, ngo.twitter_handle, ngo.address))
+   initiate_dm(ngo.twitter_handle, incident['victim_id'], ngo.twitter_user_token, ngo.twitter_user_secret)
+   fetch_stats.append('Volunteer @%s now follows Inceident Reporter %s' %(ngo.twitter_handle, incident['victim_id']))
+   fetch_stats.append('Send sms to Incident Reporter to follow @%s' %ngo.twitter_handle)
+   fetch_stats.append('Send an SMS on behalf of NGO representative to Incident Reporter')
+   connections = Connection(user_id=incident['victim_id'], NGO_id=ngo.twitter_user_id, category='harrasment',description='Just started a counselling', status_code='In Progress')
+   db.session.add(connections)
+   db.session.commit()
+ return render_template("fetch_stats.html", fetch_stats=fetch_stats)
 
 @app.route('/logout/')
 def logout():
