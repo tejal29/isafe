@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import decimal
 from datetime import datetime
 from flask import jsonify
+import os
 from time import time
 from sqlalchemy import Index, ForeignKey
 
@@ -100,6 +101,7 @@ class NGO(db.Model):
 
 	org_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	org_name = db.Column(db.String(60), nullable=False)
+    name = db.Column(db.String(60), nullable=False)
 	twitter_handle = db.Column(db.String(60), nullable=False)
 	email = db.Column(db.String(60), nullable=False)
 	phone = db.Column(db.String(60), nullable=False)
@@ -108,7 +110,7 @@ class NGO(db.Model):
 	address = db.Column(db.String(60), nullable=False)
 	description = db.Column(db.String(500), nullable=False)
 	category = db.Column(db.String(60), nullable=False)
-	twitter_user_id = db.Column(db.String(60), nullable=True)
+	twitter_user_id = db.Column(db.String(60), nullable=True, unique=True)
 	twitter_user_token = db.Column(db.String(60), nullable=True)
 	twitter_user_secret = db.Column(db.String(60), nullable=True)
 
@@ -171,8 +173,8 @@ class Connection(db.Model):
 	__tablename__ = "connection_status"
 
 	connection_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-	user_id = db.Column(db.Integer, nullable=False)
-	NGO_id = db.Column(db.Integer, nullable=False)
+	user_id = db.Column(db.String(60), nullable=False)
+	NGO_id = db.Column(db.String(60), db.ForeignKey('ngo_info.twitter_user_id'), nullable=False)
 	description = db.Column(db.String(60), nullable=False)
 	status_code = db.Column(db.String(60), nullable=False)
 	category = db.Column(db.String(60), nullable=False)
@@ -204,10 +206,10 @@ def connect_to_db(app):
 	"""Connect the database to our Flask app."""
 
 	# Configure to use our PostgreSQL database
-	app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/isafe_db'
+	app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "postgresql://localhost/isafe_db")
 	db.app = app
 	db.init_app(app)
-
+        db.create_all()
 
 if __name__ == "__main__":
 	# As a convenience, if we run this module interactively, it will leave

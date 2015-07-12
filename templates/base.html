@@ -45,15 +45,16 @@
 	                    <a id="home_route" class="navbar-brand" href="/">
 	                    	<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 	                    	ISafe</a>
-
 	                </div> 
 
 	                <div id="navbar" class="navbar-collapse collapse">
 	                    <ul class="nav navbar-nav">
 	                        <li id="heat_route"><a href="/heat">Heatmap</a></li>
 	                        <li id="markers_route"><a href="/markers">Reported Incidents</a></li>
-	                        <li id="partners_route"><a href="/partners">Partners</a></li>
+	                        <li id="partners_route"><a href="/volunteers">Volunteers</a></li>
 	                       	<li id="partner_form_route"><a href="/partner_form">Become a Partner</a></li>
+                            <li id="counsels"><a href="/counselling">Conselling</a></li>
+                            <li id="petition"><a href="/petition">Petition</a></li>
 	                    </ul>
 	                </div>
 	            </div>
@@ -72,10 +73,8 @@
 	<div id="error"></div>
 
 	{% block content %} 
-		<a href="/twitter_signin">
-			<img src="../images/sign-in.png" />					
-		</a>
-	{% endblock %}
+	Welcome to ISafe! We are a non profit organization who connect women in need with out partner organizations.
+        {% endblock %}
 
  </body>
  </html>

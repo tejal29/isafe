@@ -29,10 +29,6 @@ twitter = oauth.remote_app('twitter',
   consumer_secret=consumer_secret
 )
 
-print "this is runnign"
-
-print twitter
-
 TWITTER_REQUEST_TOKEN = 'https://api.twitter.com/oauth/request_token'
 
 app = Flask(__name__)
@@ -79,11 +75,11 @@ def show_reported_incidents():
    
     return render_template("markers.html")
 
-@app.route('/partners')
+@app.route('/volunteers')
 def show_partners_map():
     """Shows partners on map."""
    
-    return render_template("partners.html")
+    return render_template("volunteers.html")
 
 @app.route('/partner_form')
 def show_organization_form():
@@ -115,6 +111,7 @@ def get_marker_points():
         
         return DM_detail.get_features_objects_by_date(start_date_formatted,end_date_formatted) #call class method that will return GeoJSON features
 
+
     else:                               # user has not entered in a date, use a default period
         
         end_date = datetime.now()                    
@@ -124,6 +121,30 @@ def get_marker_points():
 
         return DM_detail.get_features_objects_by_date(start_date,end_date)
 
+@app.route('/petition')
+def petition():
+    """Create Petition"""
+    # No api for quering petition
+    petitions = []
+    petitions.append({'title': 'Increase Patrol in Sector 5 Delhi after 6 p.m', 
+                       'signature_count': '5331', 
+                       'goal': '10000', 
+                       'url': ''})
+    cities = ['Indira Nagar, Delhi', 'Sector 10, Kolkotta']
+    #cities = DangerCities.query.group_by(DM_detail.location).count
+    return render_template("petition_form.html", petitions=petitions, cities=cities)
+
+@app.route('/volunteers')
+def show_volunteers():
+   volunteers = NGO.query.outerjoin(Connection)
+   print(volunteers)
+   return render_template("volunteers.html", volunteers=volunteers)
+
+@app.route('/volunteer_registration')
+def show_organization_form():
+    """Shows form for organizations/NGOs to complete."""
+
+    return render_template("organization_form.html")
     
 @app.route('/get_heat')
 def get_heat_points():
@@ -177,15 +198,13 @@ def get_oauth_token(resp):
         'user_id': resp['user_id']
     }
     profile = get_twitter_profile(resp['user_id'])
-    print ''
-    print profile
-    print ''
     session['user_id'] = g.twitter_info['user_id']
     session['oauth_token'] = g.twitter_info['oauth_token']
     session['oauth_token_secret'] = g.twitter_info['oauth_token_secret']
     user_id  = session['user_id']
     user_token = session['oauth_token']
     user_secret = session['oauth_token_secret']
+    org_name = session["org_name"]
     name = session["name"]
     email = session["email"]
     twitter_handle = session["twitter_handle"]
@@ -197,7 +216,7 @@ def get_oauth_token(resp):
     phone = session["phone"]
 
     for category in categories:
-        organization = NGO(org_name=name,email=email, twitter_handle=twitter_handle,address=address,description=description,category=category,
+        organization = NGO(org_name=org_name,name=name,email=email, twitter_handle=twitter_handle,address=address,description=description,category=category,
         x_cord=x_cord,y_cord=y_cord,phone=phone,twitter_user_id=user_id,twitter_user_token=user_token,twitter_user_secret=user_secret)
         
         db.session.add(organization)
@@ -210,15 +229,13 @@ def get_oauth_token(resp):
 def twitter_auth():
     """Twitter authorization."""
 
+    org_name = request.args.get("org_name")
     name = request.args.get("name")
     email = request.args.get("email")
     phone = request.args.get("phone")
     twitter_handle = request.args.get("twitter")
     address = request.args.get("address")
     description = request.args.get("description")
-
-    print name
-    print email
 
     categories = str(request.args.get("categories")) #put JS returned into string
     categories_list = categories.strip("]").strip("[").split(",") #put string into list
@@ -239,6 +256,7 @@ def twitter_auth():
     x_cord = coordinates[1]
 
     session["name"] = name
+    session["org_name"] = org_name
     session["email"] = email
     session["phone"] = phone
     session["twitter_handle"] = twitter_handle
