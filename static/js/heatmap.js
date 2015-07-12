@@ -131,8 +131,6 @@ $( document ).ready(function(){
     //this will have the tab in the navbar for this page be active
     $('#heat_route').addClass('active');
     $('#markers_route').removeClass('active');
-    $('#trends_route').removeClass('active');
-    $('#report_route').removeClass('active');
-    $('#journey_route').removeClass('active');
-    $('#home_route').removeClass('active');
+    $('#parnters_route').removeClass('active');
+    $('#partner_form_route').removeClass('active');
 });

@@ -2,9 +2,9 @@
     L.mapbox.accessToken = 'pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZexYn1AwdiasXbsg';
 
     // Set up map characteristics and layers
-    var map = L.mapbox.map('map', 'shabemdadi.fab5eb0c')
-            .addLayer(L.mapbox.tileLayer('shabemdadi.fab5eb0c'))
-            .addControl(L.mapbox.geocoderControl('mapbox.places', { //user can enter in address
+    var map = L.mapbox.map('map', 'shabemdadi.mmegb9ll')
+            .addLayer(L.mapbox.tileLayer('shabemdadi.mmegb9ll'))
+            .addControl(L.mapbox.geocoderControl('shabemdadi.mmegb9ll', { //user can enter in address
             autocomplete: true                                      // address will be autocompleted    
                 }));
             L.control.locate().addTo(map); //allows user to locate themselves

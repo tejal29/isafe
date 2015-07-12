@@ -44,25 +44,53 @@ class DM_detail(db.Model):
 		date_formatted = datetime.strftime(self.date,"%m/%d/%Y") #format time and date as strings to use in feature objects
 		time_formatted = self.time.strftime("%I:%M %p")
 
+		marker_color_dict = {'Personal Theft/Larceny':'#FF0000', #This dictionary will link the type of crime to the color marker it will be assigned    
+								'Robbery':'#0000FF',
+								'Rape/Sexual Assault':'#008000',
+								'Aggravated Assault':'#FFA500',
+								'Simple Assault':'#6600CC',
+								'Other':'#669999',
+							}
+
 		feature_object = {
-								"type": "Feature",
-								"geometry": {
-								  "type": "Point",
-								  "coordinates": [str(decimal.Decimal(self.y_cord)), str(decimal.Decimal(self.x_cord))] #deal with decimal from database
-								},
-								"properties": {
-								  "title": self.map_category,
-								  "description": self.description, #put description in string and called title capitalization on it
-								  "date": date_formatted,
-								  "time":time_formatted,
-								  "address":self.address,
-								  "marker-color": '#FF0000', #use marker color dictionary to assign marker colors based on type of crime
-								  "marker-size": "small",
-								  "marker-symbol": "marker"
-								}
-							  }
+							"type": "Feature",
+							"geometry": {
+							  "type": "Point",
+							  "coordinates": [str(decimal.Decimal(self.y_cord)), str(decimal.Decimal(self.x_cord))] #deal with decimal from database
+							},
+							"properties": {
+							  "title": self.category,
+							  "description": self.raw_text, #put description in string and called title capitalization on it
+							  "date": date_formatted,
+							  "time":time_formatted,
+							  "address":self.address,
+							  "marker-color": marker_color_dict[self.category], #use marker color dictionary to assign marker colors based on type of crime
+							  "marker-size": "small",
+							  "marker-symbol": "marker"
+							}
+						  }
 
 		return feature_object
+
+	@classmethod
+	def get_features_objects_by_date(cls,start_date,end_date):
+		"""Query table and then make feature objects on each instance to be sent to map"""
+
+		incidents = cls.query.filter(cls.date >= start_date, cls.date <= end_date).all() #create query object of rows that fall in time range
+
+		print len(crime_stats)
+		
+		marker_object_dict = { "type": "FeatureCollection"}
+		marker_object_list = []
+
+		for incident in incidents:                               #iterate over query object calling the feature object class method on each
+			marker_object = incident.make_feature_object()
+
+			marker_object_list.append(marker_object)            #append each feature object to a list  
+
+		marker_object_dict["features"] = marker_object_list     #add list of feature objects to the value of a key
+
+		return jsonify(marker_object_dict)
 
 class NGO(db.Model):
 
@@ -83,6 +111,58 @@ class NGO(db.Model):
 	twitter_user_id = db.Column(db.String(60), nullable=True)
 	twitter_user_token = db.Column(db.String(60), nullable=True)
 	twitter_user_secret = db.Column(db.String(60), nullable=True)
+
+
+	def make_feature_object(self):
+		"""Make GeoJSON feature object"""
+
+		marker_color_dict = {'Personal Theft/Larceny':'#FF0000', #This dictionary will link the type of crime to the color marker it will be assigned    
+								'Robbery':'#0000FF',
+								'Rape/Sexual Assault':'#008000',
+								'Aggravated Assault':'#FFA500',
+								'Simple Assault':'#6600CC',
+								'Other':'#669999',
+							}
+
+		feature_object = {
+								"type": "Feature",
+								"geometry": {
+								  "type": "Point",
+								  "coordinates": [str(decimal.Decimal(self.y_cord)), str(decimal.Decimal(self.x_cord))] #deal with decimal from database
+								},
+								"properties": {
+								  "title": self.category,
+								  "description": self.description, #put description in string and called title capitalization on it
+								  "date": date_formatted,
+								  "time":time_formatted,
+								  "address":self.address,
+								  "marker-color": marker_color_dict[self.category], #use marker color dictionary to assign marker colors based on type of crime
+								  "marker-size": "small",
+								  "marker-symbol": "marker"
+								}
+							  }
+
+		return feature_object
+
+	@classmethod
+	def get_features_objects(cls):
+		"""Query table and then make feature objects on each instance to be sent to map"""
+
+		organizations = cls.query.all() #create query object of rows that fall in time range
+
+		print len(crime_stats)
+		
+		marker_object_dict = { "type": "FeatureCollection"}
+		marker_object_list = []
+
+		for organization in organizations:                               #iterate over query object calling the feature object class method on each
+			marker_object = organization.make_feature_object()
+
+			marker_object_list.append(marker_object)            #append each feature object to a list  
+
+		marker_object_dict["features"] = marker_object_list     #add list of feature objects to the value of a key
+
+		return jsonify(marker_object_dict)
 
 class Connection(db.Model):
 

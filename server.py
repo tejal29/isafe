@@ -67,54 +67,89 @@ def index():
    
     return render_template("base.html")
 
-@app.route('/organizations')
+@app.route('/heat')
+def show_heat():
+    """Show heatmap"""
+
+    return render_template("heatmap.html")
+
+@app.route('/reported_incidents')
+def show_reported_incidents():
+    """Shows partners on map."""
+   
+    return render_template("markers.html")
+
+@app.route('/partners')
+def show_partners_map():
+    """Shows partners on map."""
+   
+    return render_template("partners.html")
+
+@app.route('/partner_form')
 def show_organization_form():
     """Shows form for organizations/NGOs to complete."""
 
     print twitter
    
-    return render_template("organization_form.html")
+    return render_template("partner_form.html")
 
-@app.route('/save_org_info')
-def process_report():
-    """Save reported crime to database."""
+@app.route('/get_partners')
+def show_partners():
+    """Get JSON objects for partners."""
 
-    name = request.args.get("name")
-    email = request.args.get("email")
-    phone = request.args.get("phone")
-    twitter = request.args.get("twitter")
-    address = request.args.get("address")
-    description = request.args.get("description")
+    return NGO.get_features_objects()
 
-    print name
-    print email
+@app.route('/get_markers')
+def get_marker_points():
+    """Get JSON objects for marker points."""
 
-    categories = str(request.args.get("categories")) #put JS returned into string
-    categories_list = categories.strip("]").strip("[").split(",") #put string into list
-    category_list = []
+    start_date = request.args.get("start_date") #start_date and end_date are defined in the event listener in javascript and passed into Flask
+    end_date = request.args.get("end_date")
 
-    for category in categories_list:    #iterate through the list to strip out quotes and add to a list
-        category_stripped = category.strip('"')
-        category_list.append(category_stripped)
+    if start_date:                              #if the user enters in a start_date
 
-    #use the Mapbox geocoder API to get the coordinates of the addressed inputted
-    geocode = requests.get("http://api.tiles.mapbox.com/v4/geocode/mapbox.places/'%s'.json?access_token=pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZexYn1AwdiasXbsg" % address)
-    geocode_text = geocode.text     #put the response into text
-    geocode_json = json.loads(geocode_text) #read in as json
+        print start_date
 
-    coordinates = geocode_json["features"][0]["geometry"]["coordinates"]    #this will return the coordinates of the first returned location, sometimes there is more than one, maybe deal with this later
+        start_date_formatted = datetime.strptime(start_date,"%Y-%m-%d") #reformat start and end dates as date objects
+        end_date_formatted = datetime.strptime(end_date,"%Y-%m-%d")
+        
+        return DM_detail.get_features_objects_by_date(start_date_formatted,end_date_formatted) #call class method that will return GeoJSON features
 
-    y_cord = coordinates[0]
-    x_cord = coordinates[1]
+    else:                               # user has not entered in a date, use a default period
+        
+        end_date = datetime.now()                    
+        start_date = end_date - timedelta(days=15)
 
-    organization = NGO(org_name=name,email=email, twitter_handle=twitter,address=address,description=description,category=category,
-        x_cord=x_cord,y_cord=y_cord,phone=phone)
+        print start_date
 
-    db.session.add(incident)
+        return DM_detail.get_features_objects_by_date(start_date,end_date)
 
-    db.session.commit()    
+    
+@app.route('/get_heat')
+def get_heat_points():
+    """Make JSON objects for markers on heatmap."""
 
-    return redirect('/organizations')
+    start_date = request.args.get("start_date") #start_date and end_date are defined in the event listener in javascript and passed into Flask
+    end_date = request.args.get("end_date")
+
+    if start_date:                              #if the user enters in a start_date
+
+        print start_date
+        print end_date
+
+        start_date_formatted = datetime.strptime(start_date,"%Y-%m-%d") #reformat start and end dates as date objects
+        end_date_formatted = datetime.strptime(end_date,"%Y-%m-%d")
+        
+        return DM_detail.get_features_objects_by_date(start_date_formatted,end_date_formatted)
+
+    else:                               # user has not entered in a date, use a default period
+        
+        end_date = datetime.now()                    
+        start_date = end_date - timedelta(days=15)
+
+        print start_date
+
+        return DM_detail.get_features_objects_by_date(start_date,end_date)
 
 @twitter.tokengetter
 def get_twitter_token():
