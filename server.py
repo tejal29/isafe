@@ -77,6 +77,21 @@ def show_reported_incidents():
    
     return render_template("markers.html")
 
+@app.route('/counselling')
+def show_table():
+  connections = Connection.query.all()
+  volunteers = NGO.query.all()
+  items = []
+  for connection in connections:
+   item = {}
+   item['type'] = connection.category 
+   item['status'] = connection.status_code
+   for volunteer in volunteers:
+     if volunteer.twitter_user_id == connection.NGO_id:
+       item['name'] = volunteer.name
+   items.append(item)
+  return render_template("counsel.html", items=items)
+
 @app.route('/volunteers')
 def show_partners_map():
     """Shows partners on map."""
@@ -135,12 +150,6 @@ def petition():
     #cities = DangerCities.query.group_by(DM_detail.location).count
     return render_template("petition_form.html", petitions=petitions, cities=cities)
 
-@app.route('/volunteers')
-def show_volunteers():
-   volunteers = NGO.query.outerjoin(Connection)
-   print(volunteers)
-   return render_template("volunteers.html", volunteers=volunteers)
-    
 @app.route('/get_heat')
 def get_heat_points():
     """Make JSON objects for markers on heatmap."""
@@ -298,7 +307,8 @@ def fetch_dms():
    fetch_stats.append('Volunteer @%s now follows Inceident Reporter %s' %(ngo.twitter_handle, incident['victim_id']))
    fetch_stats.append('Send sms to Incident Reporter to follow @%s' %ngo.twitter_handle)
    fetch_stats.append('Send an SMS on behalf of NGO representative to Incident Reporter')
-   connections = Connection(user_id=incident['victim_id'], NGO_id=ngo.twitter_user_id, category='harrasment',description='Just started a counselling', status_code='In Progress')
+   if Connection.query.filter_by(user_id==incident['victim_id'], NGO_id=ngo.twitter_user_id).count <1:
+     connections = Connection(user_id=incident['victim_id'], NGO_id=ngo.twitter_user_id, category='harrasment',description='Just started a counselling', status_code='In Progress')
    db.session.add(connections)
    db.session.commit()
  return render_template("fetch_stats.html", fetch_stats=fetch_stats)
