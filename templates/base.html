@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset=utf-8 />
-	<title>CrimeSF</title>
+	<title>ISafe</title>
 	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
 	<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
@@ -11,7 +11,7 @@
 	<link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
 
 	<script src="https://code.jquery.com/jquery.js"></script>
-	
+
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
@@ -44,25 +44,19 @@
 	                    </button>
 	                    <a id="home_route" class="navbar-brand" href="/">
 	                    	<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-	                    	CrimeSF</a>
+	                    	ISafe</a>
 
 	                </div> 
 
 	                <div id="navbar" class="navbar-collapse collapse">
 	                    <ul class="nav navbar-nav">
 	                        <li id="heat_route"><a href="/heat">Heatmap</a></li>
-	                        <li id="markers_route"><a href="/points-of-interest">Points of Interest</a></li>
-	                        <li id="trends_route"><a href="/trends">Trends</a></li>
+	                        <li id="markers_route"><a href="/markers">Points of Interest</a></li>
+	                        <li id="markers_route"><a href="/partners">Organizations</a></li>
 	                        <li id="report_route"><a href="/report">Report</a></li>
 	                        <li id="journey_route"><a href="/journey">Your Journey</a></li>
+	                       	<li id="trends_route"><a href="/organizations">Become a Partner</a></li>
 	                    </ul>
-	                     <ul class="nav navbar-nav navbar-right">
-                            <li>
-                            	<form action="/get_recent" id="refresh">
-                            		<button id="refresh_button" type="submit" class="btn btn-primary">Get Recent Crime</button>
-                            	</form>
-                            </li>
-                        </ul>
 	                </div>
 	            </div>
 	    
@@ -79,7 +73,11 @@
 	{% endwith %}
 	<div id="error"></div>
 
-	{% block content %} put your content here {% endblock %}
+	{% block content %} 
+		<a href="/twitter_signin">
+			<img src="/images/sign-in.png" />					
+		</a>
+	{% endblock %}
 
  </body>
  </html>

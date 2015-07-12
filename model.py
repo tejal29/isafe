@@ -25,17 +25,17 @@ class DM_detail(db.Model):
 
 	incident_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	user_id = db.Column(db.Integer, nullable=False)
-	address = db.Column(db.String(60), nullable=False)
-	x_cord = db.Column(db.Numeric, nullable=False)
-	y_cord = db.Column(db.Numeric, nullable=False)
-	day_of_week = db.Column(db.String(10), nullable=False)
+	location = db.Column(db.String(60), nullable=False)
+	x_cord = db.Column(db.Numeric, nullable=True)
+	y_cord = db.Column(db.Numeric, nullable=True)
+	day_of_week = db.Column(db.String(10), nullable=True)
 	date = db.Column(db.Date, nullable=False)
-	month = db.Column(db.String(10), nullable=False)
+	month = db.Column(db.String(10), nullable=True)
 	time = db.Column(db.Time, nullable=False)
-	hour = db.Column(db.String(10), nullable=False)
-	category = db.Column(db.String(60), ForeignKey("Category.category"),nullable=False)
+	hour = db.Column(db.String(10), nullable=True)
+	category = db.Column(db.String(60), nullable=True)
 	raw_text = db.Column(db.String(140), nullable=False)
-	data_source = db.Column(db.String(60), nullable=False)
+	data_source = db.Column(db.String(60), nullable=True)
 	to_safety = db.Column(db.String(60), nullable=False)
 
 	def make_feature_object(self):
@@ -79,7 +79,10 @@ class NGO(db.Model):
 	y_cord = db.Column(db.Numeric, nullable=False)
 	address = db.Column(db.String(60), nullable=False)
 	description = db.Column(db.String(500), nullable=False)
-	category = db.Column(db.String(60), ForeignKey("Category.category"), nullable=False)
+	category = db.Column(db.String(60), nullable=False)
+	twitter_user_id = db.Column(db.String(60), nullable=True)
+	twitter_user_token = db.Column(db.String(60), nullable=True)
+	twitter_user_secret = db.Column(db.String(60), nullable=True)
 
 class Connection(db.Model):
 
@@ -91,8 +94,8 @@ class Connection(db.Model):
 	user_id = db.Column(db.Integer, nullable=False)
 	NGO_id = db.Column(db.Integer, nullable=False)
 	description = db.Column(db.String(60), nullable=False)
-	status_code = db.Column(db.String(60), ForeignKey("Status.status_code"),nullable=False)
-	category = db.Column(db.String(60), ForeignKey("Category.category"), nullable=False)
+	status_code = db.Column(db.String(60), nullable=False)
+	category = db.Column(db.String(60), nullable=False)
 
 class Category(db.Model):
 

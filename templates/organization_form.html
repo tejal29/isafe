@@ -9,59 +9,70 @@
 <link rel="stylesheet" href="../static/css/stylesheet.css">
 
 <div class="container">
-<!--     <div class="row"> -->
+    <div class="row">
         <div class="col-md-12">
-            <form class="form-horizontal">
+            <form class="form-horizontal" action='/save_org_info'>
             	<div id="name_input" class="form-group">
-                	<label class="control-label">Organization Name 
+                	<label class="col-md-2 control-label">Organization Name</label>
+                    <div class="col-md-6 input-group">
                     	<input type="text" class="form-control" name="name" id="organization_name" placheolder="Enter organization name">
-    				</label>
+    				</div>
                 </div>
                 <div id="email_input" class="form-group">
-                    <label class="control-label">Contact Email 
+                    <label class="col-md-2 control-label">Contact Email</label>
+                    <div class="col-md-6 input-group">
                         <input type="email" class="form-control" name="email" id="organization_email" placheolder="Enter contact email">
-                    </label>
+                    </div>
                 </div>
                 <div id="phone_input" class="form-group">
-                    <label class="control-label">Contact Phone
+                    <label class="col-md-2 control-label">Contact Phone</label>
+                    <div class="col-md-6 input-group">
                         <input type="text" class="form-control" name="phone" id="organization_phone" placheolder="Enter contact phone">
-                    </label>
+                    </div>
                 </div>
                 <div id="handle_input" class="form-group">
-    				<label class="control-label">Twitter Handle
-                        <span class="input-group-addon">@</span>
-                    	<input type="text" class="form-control" id="twitter_handle" name="twitter" placheolder="Enter twitter handle">
-                	</label>
+    				<label class="col-md-2 control-label">Twitter Handle</label>
+                        <div class="col-md-6 input-group">
+                            <span class="input-group-addon">@</span>
+                        	<input type="text" class="form-control" id="twitter_handle" name="twitter" placheolder="Enter twitter handle">
+                        </div>
                 </div>
                 <div id="address_input" class="form-group">
-                    <label class="control-label">Enter Address 
+                    <label class="col-md-2 control-label">Enter Address</label>
+                    <div class="col-md-6 input-group">
                     	<input type="text" class="form-control" id="org_address" name="address" placheolder="Enter address">
-                	</label>
+                    </div>
                 </div>
                 <div id="description_input" class="form-group">
-                    <label class="control-label">Enter Organization Description
-                        <br>
+                    <label class="col-md-2 control-label">Enter Organization Description</label>
+                    <div class="col-md-6 input-group">
                     	<textarea class="form-control" rows="3" name='description' id='org_description' placeholder="Enter organization description"></textarea>
-                	</label>
-                </div>
-                <div>
-                    <label>Select Specialtiy
-                    </label>
-                </div>
-                </div class="checkbox">
-                    <div>
-                        <input type="checkbox" name="category" value='Harrassment' checked>Harrassment
                     </div>
-                <div>
-
-            	<button type="submit" id="org_button" class="btn btn-default">Submit</button>
+                </div>
+                <div id="speciality_input" class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        </div class="checkbox">
+                            <label class="col-md-2 control-label">
+                                <input type="checkbox" name="category" value='Harrassment' checked>Harrassment
+                            </label>
+                        <div>
+                    </div>
+                </div>
+                <div id="submit_buttom" class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+            	               <a href="/twitter_signin">
+                                    <img src="/images/sign-in.png" />                   
+                                </a>
+                    </div>
+                </div>
             	<br>
+                <button type="submit">Submit</button>
             </form>
-<!--         </div>    --> 
+        </div>    
     </div>
 </div>
 
 <!-- <script src='../static/JS/map.js'></script> -->
-<!-- <script src='../static/JS/report.js'></script> -->
+<script src='../static/js/organizations.js'></script>
 
 {% endblock %}
