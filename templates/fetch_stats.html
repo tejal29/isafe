@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<script src='../static/nprogress/nprogress.js'></script>
+<link rel='stylesheet' href='../static/nprogress/nprogress.css'/>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+
+<link rel="stylesheet" href="../static/css/stylesheet.css">
+<div class="container">
+  <table>
+  {% for stats in fetch_stats %}
+   <tr>
+        <td> {{ stats}} </td>
+   </tr>
+  {% endfor %}
+</table>
+
+</div>
+
+<!-- <script src='../static/JS/map.js'></script> -->
+<script src='../static/js/organizations.js'></script>
+
+{% endblock %}
+
