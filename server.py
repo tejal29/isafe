@@ -1,5 +1,5 @@
 from jinja2 import StrictUndefined
-from flask import Flask, render_template, redirect, request, flash, session, jsonify
+from flask import Flask, render_template, redirect, request, flash, session, jsonify, g
 from flask_debugtoolbar import DebugToolbarExtension
 from model import DM_detail, NGO, Connection, Category, Status, connect_to_db, db
 import json
@@ -11,11 +11,25 @@ import time
 import ast
 import os
 import tweepy
+from flask_oauth import OAuth
 
 consumer_key=os.environ['TWITTER_CONSUMER_KEY']
 consumer_secret=os.environ['TWITTER_CONSUMER_SECRET']
 access_token_key=os.environ['TWITTER_ACCESS_TOKEN_KEY']
 access_token_secret=os.environ['TWITTER_ACCESS_TOKEN_SECRET']
+
+oauth = OAuth()
+
+twitter = oauth.remote_app('twitter',
+  base_url='https://api.twitter.com/1.1/',
+  request_token_url='https://api.twitter.com/oauth/request_token',
+  access_token_url='https://api.twitter.com/oauth/access_token',
+  authorize_url='https://api.twitter.com/oauth/authenticate',
+  consumer_key=consumer_key,
+  consumer_secret=consumer_secret
+)
+
+TWITTER_REQUEST_TOKEN = 'https://api.twitter.com/oauth/request_token'
 
 app = Flask(__name__)
 
@@ -32,77 +46,22 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 
 app.jinja_env.undefined = StrictUndefined
 
+
+# ========================================================================
+# Before zone
+
+@app.before_request
+def before_request():
+  """Function called on each request.
+  """
+  print session.get('user_id', None)
+
+
 @app.route('/')
 def index():
     """Homepage."""
    
-    return render_template("homepage.html")
-
-@app.route('/heat')
-def show_heat():
-    """Show heatmap"""
-
-    return render_template("heatmap.html")
-
-    
-@app.route('/get_heat')
-def get_heat_points():
-    """Make JSON objects for markers on heatmap."""
-
-    start_date = request.args.get("start_date") #start_date and end_date are defined in the event listener in javascript and passed into Flask
-    end_date = request.args.get("end_date")
-
-    if start_date:                              #if the user enters in a start_date
-
-        print start_date
-        print end_date
-
-        start_date_formatted = datetime.strptime(start_date,"%Y-%m-%d") #reformat start and end dates as date objects
-        end_date_formatted = datetime.strptime(end_date,"%Y-%m-%d")
-        
-        return Crime_Stat.get_features_objects_by_date(start_date_formatted,end_date_formatted)
-
-    else:                               # user has not entered in a date, use a default period
-        
-        end_date = datetime.now()                    
-        start_date = end_date - timedelta(days=15)
-
-        print start_date
-
-        return Crime_Stat.get_features_objects_by_date(start_date,end_date)
-
-@app.route('/points-of-interest')
-def show__markers():
-    """Show map with markers."""
-
-    return render_template("markers.html")
-
-
-@app.route('/get_markers')
-def get_marker_points():
-    """Get JSON objects for marker points."""
-
-    start_date = request.args.get("start_date") #start_date and end_date are defined in the event listener in javascript and passed into Flask
-    end_date = request.args.get("end_date")
-
-    if start_date:                              #if the user enters in a start_date
-
-        print start_date
-
-        start_date_formatted = datetime.strptime(start_date,"%Y-%m-%d") #reformat start and end dates as date objects
-        end_date_formatted = datetime.strptime(end_date,"%Y-%m-%d")
-        
-        return Crime_Stat.get_features_objects_by_date(start_date_formatted,end_date_formatted) #call class method that will return GeoJSON features
-
-    else:                               # user has not entered in a date, use a default period
-        
-        end_date = datetime.now()                    
-        start_date = end_date - timedelta(days=15)
-
-        print start_date
-
-        return Crime_Stat.get_features_objects_by_date(start_date,end_date)
-
+    return render_template("base.html")
 
 @app.route('/organizations')
 def show_organization_form():
@@ -121,6 +80,9 @@ def process_report():
     address = request.args.get("address")
     description = request.args.get("description")
 
+    print name
+    print email
+
     categories = str(request.args.get("categories")) #put JS returned into string
     categories_list = categories.strip("]").strip("[").split(",") #put string into list
     category_list = []
@@ -129,54 +91,100 @@ def process_report():
         category_stripped = category.strip('"')
         category_list.append(category_stripped)
 
+    #use the Mapbox geocoder API to get the coordinates of the addressed inputted
+    geocode = requests.get("http://api.tiles.mapbox.com/v4/geocode/mapbox.places/'%s'.json?access_token=pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZexYn1AwdiasXbsg" % address)
+    geocode_text = geocode.text     #put the response into text
+    geocode_json = json.loads(geocode_text) #read in as json
+
+    coordinates = geocode_json["features"][0]["geometry"]["coordinates"]    #this will return the coordinates of the first returned location, sometimes there is more than one, maybe deal with this later
+
+    y_cord = coordinates[0]
+    x_cord = coordinates[1]
+
+    organization = NGO(org_name=name,email=email, twitter_handle=twitter,address=address,description=description,category=category,
+        x_cord=x_cord,y_cord=y_cord,phone=phone)
+
+    db.session.add(incident)
+
+    db.session.commit()    
+
+    return redirect('/organizations')
+
+@twitter.tokengetter
+def get_twitter_token():
+  """
+  This is used by the API to look for the auth token and secret
+  it should use for API calls.  During the authorization handshake
+  a temporary set of token and secret is used, but afterwards this
+  function has to return the token and secret.  If you don't want
+  to store this in the database, consider putting it into the
+  session instead.
+  """
+  if hasattr(g, 'twitter_info'):
+    return g.twitter_info['oauth_token'], g.twitter_info['oauth_token_secret']
+  else:
+    g.twitter_info = {}
 
 @app.route('/twitter_auth', methods=["GET"])
-def get_oauth_token():
+@twitter.authorized_handler
+def get_oauth_token(resp):
 
-    # Example using callback (web app)
-    verifier = request.args.get('oauth_verifier')
-    # verifier = auth.request_token["oauth_token"]
+    g.twitter_info = {
+        'oauth_token': resp['oauth_token'],
+        'oauth_token_secret': resp['oauth_token_secret'],
+        'screen_name': resp['screen_name'],
+        'user_id': resp['user_id']
+    }
+    profile = get_twitter_profile(resp['user_id'])
+    print ''
+    print profile
+    print ''
+    session['user_id'] = g.twitter_info['user_id']
+    session['oauth_token'] = g.twitter_info['oauth_token']
+    session['oauth_token_secret'] = g.twitter_info['oauth_token_secret']
+    user_id  = session['user_id']
+    user_token = session['oauth_token']
+    user_secret = session['oauth_token_secret']
+    return redirect('/')
 
-    print "verifier is %s" % verifier
-
-    # Let's say this is a web app, so we need to re-build the auth handler
-    # first...
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    token = session.get('request_token')
-    session.clear()
-    # session.delete('request_token')
-    auth.request_token = token
-
-    try:
-        auth.get_access_token(verifier)
-    except tweepy.TweepError:
-        print 'Error! Failed to get access token.'
-
-    token = auth.access_token
-    secret = auth.access_token_secret
-
-    print token
-    print secret
-
-    # Construct the API instance
-    api = tweepy.API(auth)
-
-
-@app.route('/twitter_signin')
+@app.route('/twitter_signin', methods=["GET","POST"])
 def twitter_auth():
     """Twitter authorization."""
 
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret,"https://isafe.herokuapp.com/twitter_auth")
+    return twitter.authorize(callback='/twitter_auth')
 
-    # Redirect user to Twitter to authorize
-    try:
-        redirect_url = auth.get_authorization_url()
-    except tweepy.TweepError:
-        print 'Error! Failed to get request token.'
 
-    session.setdefault('request_token', auth.request_token)
+def get_twitter_profile(user_id):
+  """ """
+  resp = twitter.get('users/show.json?user_id={}'.format(user_id))
+  if resp.status != 200:
+    twitter_profile = None
+  if resp.status == 200:
+    profile = resp.data
+    profile_image_url = profile.get('profile_image_url', '')
+    profile_image_url = profile_image_url.replace('_normal', '')
+    twitter_profile = {
+      "id": profile.get('id_str', ''),
+      "name": profile.get('name', ''),
+      "profile_image_url": profile_image_url,
+      "created_at": profile.get('created_at', ''),
+      "location": profile.get('location', ''),
+      "lang": profile.get('lang', ''),
+      "description": profile.get('description', ''),
+      "screen_name": profile.get('screen_name', '')
+    }
+  return twitter_profile
 
-    # print auth.request_token["oauth_token"]
+@app.route('/logout/')
+def logout():
+  """ """
+  session.pop('client_id', None)
+  session.pop('client_secret', None)
+  session.pop('user_id', None)
+  session.pop('oauth_token', None)
+  session.pop('oauth_token_secret', None)
+  return redirect("/")
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

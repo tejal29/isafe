@@ -11,7 +11,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <form class="form-horizontal">
+            <form class="form-horizontal" action='/save_org_info'>
             	<div id="name_input" class="form-group">
                 	<label class="col-md-2 control-label">Organization Name</label>
                     <div class="col-md-6 input-group">
@@ -60,10 +60,13 @@
                 </div>
                 <div id="submit_buttom" class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-            	       <button type="submit" id="org_button" class="btn btn-default">Submit</button>
+            	               <a href="/twitter_signin">
+                                    <img src="/images/sign-in.png" />                   
+                                </a>
                     </div>
                 </div>
             	<br>
+                <button type="submit">Submit</button>
             </form>
         </div>    
     </div>
