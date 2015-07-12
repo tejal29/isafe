@@ -75,11 +75,11 @@ def show_reported_incidents():
    
     return render_template("markers.html")
 
-@app.route('/volunteers')
-def show_partners_map():
+@app.route('/partners')
+def show_partners():
     """Shows partners on map."""
    
-    return render_template("volunteers.html")
+    return render_template("partners.html")
 
 @app.route('/partner_form')
 def show_organization_form():
@@ -90,7 +90,7 @@ def show_organization_form():
     return render_template("partner_form.html")
 
 @app.route('/get_partners')
-def show_partners():
+def get_partners():
     """Get JSON objects for partners."""
 
     return NGO.get_features_objects()
