@@ -41,8 +41,9 @@ app = Flask(__name__)
 app.secret_key = "ABC"
 
 DATABASE_URL = os.environ.get("DATABASE_URL",
-                              "postgresql://localhost/isafe-db")
+                              "postgresql://localhost/isafe_db")
 
+print(DATABASE_URL)
 secret_key = os.environ.get("FLASK_SECRET_KEY", "ABC")
 
 app.config['secret_key'] = secret_key

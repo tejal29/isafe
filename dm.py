@@ -66,25 +66,6 @@ def parse_tweet():
     # db.session.commit()
     print (sender_ids, sender_locations, time, getmetosafety, harrassment_types, texts)
 
-
- # incident_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-	# user_id = db.Column(db.Integer, nullable=False)
-	# location = db.Column(db.String(60), nullable=False)
-	# x_cord = db.Column(db.Numeric, nullable=True)
-	# y_cord = db.Column(db.Numeric, nullable=True)
-	# day_of_week = db.Column(db.String(10), nullable=True)
-	# date = db.Column(db.Date, nullable=False)
-	# month = db.Column(db.String(10), nullable=True)
-	# time = db.Column(db.Time, nullable=False)
-	# hour = db.Column(db.String(10), nullable=True)
-	# category = db.Column(db.String(60), nullable=True)
-	# raw_text = db.Column(db.String(140), nullable=False)
-	# data_source = db.Column(db.String(60), nullable=True)
-	# to_safety = db.Column(db.String(60), nullable=False)
-
-
-
-
 if __name__ == "__main__":
   parse_tweet()
 

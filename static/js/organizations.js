@@ -38,7 +38,7 @@ $( document ).ready(function(){
   $("input[name='time_input']").attr("value",moment().format("HH:mm"));
   $("input[name='date_input']").attr("value",moment().format("YYYY-MM-DD"));
   $("input[name='address_input']").attr("value","683 Sutter Street, San Francisco, CA");
-  $("textarea[name='description']").html("Pick pocketer");
+  $("textarea[name='description']").html("Write a brief introduction.");
   $("#theft").prop("checked",true);
 
   //this will have the tab in the navbar for this page be active
