@@ -13,18 +13,3 @@
 
     // Set location to be San Francisco
     var geocoder = L.mapbox.geocoder('mapbox.places');
-
-    geocoder.query('San Francisco, CA', showMap);   //will zoom into San Francisco
-
-    function showMap(err, data) {
-        // The geocoder can return an area, like a city, or a
-        // point, like an address. Here we handle both cases,
-        // by fitting the map bounds to an area or zooming to a point.
-        if (data.lbounds) {
-            map.fitBounds(data.lbounds);
-        } else if (data.latlng) {
-            map.setView([data.latlng[0], data.latlng[1]], 13);
-        }
-    };
-
-    // new L.Control.Zoom({ position: 'topleft' }).addTo(map);
