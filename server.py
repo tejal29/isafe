@@ -307,10 +307,11 @@ def fetch_dms():
    fetch_stats.append('Volunteer @%s now follows Inceident Reporter %s' %(ngo.twitter_handle, incident['victim_id']))
    fetch_stats.append('Send sms to Incident Reporter to follow @%s' %ngo.twitter_handle)
    fetch_stats.append('Send an SMS on behalf of NGO representative to Incident Reporter')
-   if Connection.query.filter_by(user_id==incident['victim_id'], NGO_id=ngo.twitter_user_id).count <1:
+   if Connection.query.filter_by(user_id=incident['victim_id'], NGO_id=ngo.twitter_user_id).count <1:
      connections = Connection(user_id=incident['victim_id'], NGO_id=ngo.twitter_user_id, category='harrasment',description='Just started a counselling', status_code='In Progress')
-   db.session.add(connections)
-   db.session.commit()
+     db.session.add(connections)
+     db.session.commit()
+ print(fetch_stats)
  return render_template("fetch_stats.html", fetch_stats=fetch_stats)
 
 @app.route('/logout/')

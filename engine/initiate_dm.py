@@ -23,9 +23,11 @@ def initiate_dm(ngo_rep, victim_id, key, secret):
     text = 'D {0} Follow {1}. He/She is your system assigned representative.'.format(victim_id, ngo_rep)
     api.send_direct_message(user_id=victim_id, text=text)
     logger.info('Sent {0} to {1}'.format(text, victim_id))
-
+  except Exception:
+    print("Could not follow")
+  try:
     # Todo Fetch the tokens for ngo from database
-    text = "Hello Friend! I am your ISafe help. Tell me more about"
+    text = "Hello Friend! I am your ISafe help. Tell me more about."
     auth.set_access_token(key, secret)
     api = tweepy.API(auth)
     api.create_friendship(victim_id)

@@ -33,7 +33,7 @@ def parse_tweets():
   create_incidents = []
 
   for tweet in tweets:
-    sender_ids = tweet['sender'] ['id']
+    sender_ids = str(tweet['sender'] ['id'])
     sender_locations = tweet['sender'] ['location']
     times = tweet['created_at']
     texts = tweet['text']
@@ -73,7 +73,7 @@ def parse_tweets():
          incident['location'] = 'Pune'
          create_incidents.append(incident)
       direct_message = DM_detail(user_id=sender_ids, data_source = tweet['id_str'],
-                         location=sender_locations,datetime=time,category=harrassment_types,raw_text=texts, to_safety=getmetosafety)
+                         location='Pune',datetime=time,category=harrassment_types,raw_text=texts, to_safety=getmetosafety)
       db.session.add(direct_message)
       db.session.commit()
   return create_incidents
