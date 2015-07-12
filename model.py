@@ -45,12 +45,11 @@ class DM_detail(db.Model):
 		date_formatted = datetime.strftime(self.date,"%m/%d/%Y") #format time and date as strings to use in feature objects
 		time_formatted = self.time.strftime("%I:%M %p")
 
-		marker_color_dict = {'Personal Theft/Larceny':'#FF0000', #This dictionary will link the type of crime to the color marker it will be assigned    
-								'Robbery':'#0000FF',
-								'Rape/Sexual Assault':'#008000',
-								'Aggravated Assault':'#FFA500',
-								'Simple Assault':'#6600CC',
-								'Other':'#669999',
+		marker_color_dict = {'eve teasing':'#FF0000', #This dictionary will link the type of crime to the color marker it will be assigned    
+								'harrassment':'#0000FF',
+								'abuse':'#008000',
+								'workplace':'#FFA500',
+								'other':'#669999',
 							}
 
 		feature_object = {
@@ -118,12 +117,11 @@ class NGO(db.Model):
 	def make_feature_object(self):
 		"""Make GeoJSON feature object"""
 
-		marker_color_dict = {'Personal Theft/Larceny':'#FF0000', #This dictionary will link the type of crime to the color marker it will be assigned    
-								'Robbery':'#0000FF',
-								'Rape/Sexual Assault':'#008000',
-								'Aggravated Assault':'#FFA500',
-								'Simple Assault':'#6600CC',
-								'Other':'#669999',
+		marker_color_dict = {'eve teasing':'#FF0000', #This dictionary will link the type of crime to the color marker it will be assigned    
+								'harrassment':'#0000FF',
+								'abuse':'#008000',
+								'workplace':'#FFA500',
+								'other':'#669999',
 							}
 
 		feature_object = {

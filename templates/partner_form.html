@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<script src='../static/nprogress/nprogress.js'></script>
+<link rel='stylesheet' href='../static/nprogress/nprogress.css'/>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+
+<link rel="stylesheet" href="../static/css/stylesheet.css">
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal" action='/twitter_signin'>
+            	<div id="org_name_input" class="form-group">
+                	<label class="col-md-2 control-label">Organization Name</label>
+                    <div class="col-md-6 input-group">
+                    	<input type="text" class="form-control" name="org_name" id="organization_name" placeholder="Enter organization name">
+    				</div>
+                </div>
+                <div id="name_input" class="form-group">
+                    <label class="col-md-2 control-label">Your Name</label>
+                    <div class="col-md-6 input-group">
+                        <input type="text" class="form-control" name="name" id="organization_name" placeholder="Enter your name">
+                    </div>
+                </div>
+                <div id="email_input" class="form-group">
+                    <label class="col-md-2 control-label">Contact Email</label>
+                    <div class="col-md-6 input-group">
+                        <input type="email" class="form-control" name="email" id="organization_email" placeholder="Enter contact email">
+                    </div>
+                </div>
+                <div id="phone_input" class="form-group">
+                    <label class="col-md-2 control-label">Contact Phone</label>
+                    <div class="col-md-6 input-group">
+                        <input type="text" class="form-control" name="phone" id="organization_phone" placeholder="Enter contact phone">
+                    </div>
+                </div>
+                <div id="handle_input" class="form-group">
+    				<label class="col-md-2 control-label">Twitter Handle</label>
+                        <div class="col-md-6 input-group">
+                            <span class="input-group-addon">@</span>
+                        	<input type="text" class="form-control" id="twitter_handle" name="twitter" placeholder="Enter twitter handle">
+                        </div>
+                </div>
+                <div id="address_input" class="form-group">
+                    <label class="col-md-2 control-label">Enter Address</label>
+                    <div class="col-md-6 input-group">
+                    	<input type="text" class="form-control" id="org_address" name="address" placeholder="Enter address">
+                    </div>
+                </div>
+                <div id="description_input" class="form-group">
+                    <label class="col-md-2 control-label">Enter Organization Description</label>
+                    <div class="col-md-6 input-group">
+                    	<textarea class="form-control" rows="3" name='description' id='org_description' placeholder="Enter organization description"></textarea>
+                    </div>
+                </div>
+                <div id="speciality_input" class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        </div class="checkbox">
+                            <label class="col-md-2 control-label">
+                                <input type="checkbox" name="category" value='Harrassment' checked>Harrassment
+                            </label>
+                            <label class="col-md-2 control-label">
+                                <input type="checkbox" name="category" value='Eve Teasing' checked>Eve Teasing
+                            </label>
+                            <label class="col-md-2 control-label">
+                                <input type="checkbox" name="category" value='Abuse' checked>Abuse
+                            </label>
+                            <label class="col-md-2 control-label">
+                                <input type="checkbox" name="category" value='Workplace' checked>Workplace
+                            </label>
+                        <div>
+                    </div>
+                </div>
+                <div id="submit_buttom" class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit">Submit
+                            <img src="../images/sign-in.png" alt="twitter-signin" /> 
+                        </button>
+                    </div>
+                </div>
+            	<br>
+            </form>
+        </div>    
+    </div>
+</div>
+
+<script src='../static/js/partner_form.js'></script>
+
+{% endblock %}

@@ -6,6 +6,12 @@
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
 
+<script>
+
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+
+</script>
+
 <link rel="stylesheet" href="../static/css/stylesheet.css">
 <div class="container">
   On Going Petitions
@@ -21,8 +27,8 @@
         <td> {{ petition.title}} </td>
         <td> {{ petition.signature_count}} </td>
         <td> {{ petition.goal}} </td>
-        <td> <a href='{{ petition.url }}'>View Petition </a> </td>
-        <td> <a class="twitter-share-button" href="https://twitter.com/intent/tweet">Tweet</a></td>
+        <td> <a href='https://www.change.org/p/ensure-women-s-safety-fightforherrights'>View Petition </a> </td>
+        <td> <a class="twitter-share-button" href="https://twitter.com/intent/tweet" data-text="Increase Patrol in Sector 5 Delhi after 6 p.m" data-hashtags="iSafe" data-counturl="">Tweet</a></td>
    </tr>
   {% endfor %}
   </table>
@@ -39,7 +45,7 @@
  </table>
 </div>
 <!-- <script src='../static/JS/map.js'></script> -->
-<script src='../static/js/organizations.js'></script>
+<!-- <script src='../static/js/organizations.js'></script> -->
 
 {% endblock %}
 
